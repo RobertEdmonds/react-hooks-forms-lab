@@ -1,26 +1,21 @@
 import React,{useState} from "react";
 import { v4 as uuid } from "uuid";
-import Item from "./Item";
 
-function ItemForm() {
-  const newItem = {
-    id: uuid(), // the `uuid` library can be used to generate a unique id
-    name: itemName,
-    category: itemCategory,
-  };
-  const [itemName, setInputItem]= useState([])
-  const [itemCategory, setNewCategory] = useState([])
-  const [newData, setNewData] = useState([])
+function ItemForm({onItemFormSubmit}) {
+  // const newItem = {
+  //   id: uuid(), // the `uuid` library can be used to generate a unique id
+  //   name: itemName,
+  //   category: itemCategory,
+  // };
+  const [itemName, setInputItem]= useState("")
+  const [itemCategory, setNewCategory] = useState("Produce")
 
-  function onItemFormSubmit(event){
+  function onFormSubmit(event){
     event.preventDefault();
-    if(newItem.length > 0){
-      const formData = {name: itemName, category: itemCategory};
-      const dataArray = {...newData, formData};
-      setNewData(dataArray)
+      const formData = {id:uuid(), name: itemName, category: itemCategory};
+      onItemFormSubmit(formData)
       setInputItem("")
-      setNewCategory("")
-    }
+      setNewCategory("Produce")
   }
   function handleItem(event){
     setInputItem(event.target.value)
@@ -28,15 +23,15 @@ function ItemForm() {
   function handleChange(event){
     setNewCategory(event.target.value)
   }
-  const newSubmit = newData.map((data, index)=>{
-    return(
-      <Item id={index} name={data.name} category={data.category}/>
-    )
-  })
+  // const newSubmit = newData.map((data, index)=>{
+  //   return(
+  //     <Item id={index} name={data.name} category={data.category}/>
+  //   )
+  // })
 
   return (
     <div>
-    <form className="NewItem" onSubmit={onItemFormSubmit}>
+    <form className="NewItem" onSubmit={onFormSubmit}>
       <label>
         Name:
         <input type="text" name="name" onChange={handleItem}/>
@@ -53,7 +48,6 @@ function ItemForm() {
 
       <button type="submit">Add to List</button>
     </form>
-    {newSubmit}
     </div>
   );
 }
